@@ -33,7 +33,7 @@ else
   if [ "$pgnum" == "" ]; then
     pgnum=512
   fi
-  ceph osd pool create ${pname} ${pgnum}
+  ceph osd pool create ${pname} ${pgnum} && exit 1
   source `dirname $0`/SetPoolReplication.sh
   source `dirname $0`/SetPoolQuota.sh
   source `dirname $0`/SetPoolCaps.sh

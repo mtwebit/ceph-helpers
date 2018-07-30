@@ -3,15 +3,21 @@
 source `dirname $0`/_ceph-functions.sh
 
 case $1 in
-  i)
+  ic)
     state=inconsistent
+    ;;
+  ia)
+    state=inactive
     ;;
   inconsistent)
     state=$1
     ;;
+  inactive)
+    state=$1
+    ;;
   *)
     echo "Usage $0 <pg_status>"
-    echo "Valid pg_statuses (abbr): i[nconsistent]"
+    echo "Valid pg_statuses (abbr): ic=inconsistent ia=inactive]"
     exit
     ;;
 esac
@@ -24,7 +30,10 @@ echo "  /etc/init.d/ceph restart osd.x"
 echo "Running through $state pgs..."
 repall=0
 for i in $pglist; do
+  echo Checking $i...
+  echo -n state:
   get_pg_state $i
+  echo -n pool:
   get_pg_pool $i
   echo -n "`ceph pg map $i` - ? "
 #  printf '%-25s %s\n' $i `ceph auth get-key client.$i`

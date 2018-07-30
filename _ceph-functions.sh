@@ -40,8 +40,8 @@ function get_pg_pool() {
 function get_pgs() {
   [ "${1}" == "" ] && echo "Internal error: missing pg state arg." && exit
   if [ "${2}" == "" ]; then
-    ceph pg dump 2>/dev/null | grep $state | cut -f -1
+    ceph pg dump_stuck $1 2>/dev/null | grep -v "STAT" | cut -f -1
   else
-    eval "${2}=\"$(ceph pg dump 2>/dev/null | grep $state | cut -f -1 | tr "\n" ' ')\""
+    eval "${2}=\"$(ceph pg dump_stuck $1 2>/dev/null | grep -v "STAT" | cut -f -1 | tr "\n" ' ')\""
   fi
 }
